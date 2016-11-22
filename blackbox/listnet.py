@@ -65,10 +65,9 @@ class ListNet(object):
                     self.test_X = []
                     for t in data.session.unique():
                         dt = data[data.session == t]
-                        if dt.score.sum() == 0:
-                            continue
                         xt = dt.loc[:,np.in1d(dt.columns,["session"],invert=True)]
-                        self.test_X.append(xt.values.astype(np.float32))                
+                        self.test_X.append(xt.values.astype(np.float32))
+                    self.T = len(self.X)
                 else:
                     self.test_X = []
                     self.test_Y = []
@@ -171,6 +170,7 @@ class ListNet(object):
     def test(self,filename,noscore = True):
         testres = 0
         self.prepare_data(filename = filename, train = False, noscore = noscore)
+
         if noscore:
             pred = pd.DataFrame()
             for j in range(self.test_T):
